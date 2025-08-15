@@ -45,7 +45,9 @@ python app.py
 
 The app will start running at: http://127.0.0.1:5000/
 
-Project Structure
+## Project Structure
+
+
 
 Conflict-Free-Scheduling/
 │── app.py # Main Flask application
@@ -55,6 +57,8 @@ Conflict-Free-Scheduling/
 │── static/css/style.css # Styling
 │── requirements.txt # Python dependencies
 └── .gitignore # Files to be ignored by Git
+
+
 
 
 Author
