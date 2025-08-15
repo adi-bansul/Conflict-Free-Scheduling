@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card mb-4">
+            <div class="card-header bg-success text-white">
+                <h2 class="mb-0">Generated College Timetable - Year {{ academic_year }} ({{ mode }})</h2>
+            </div>
+            <div class="card-body">
+                {% for day, slots in timetable.items() %}
+                    <div class="mb-4">
+                        <h3 class="mb-3">{{ day }}</h3>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th style="width: 50%">Subject (Type)</th>
+                                        <th style="width: 25%">Start Time</th>
+                                        <th style="width: 25%">End Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for slot in slots %}
+                                        <tr class="{{ 'table-warning' if slot.name == 'Break' else '' }}">
+                                            <td>{{ slot.name }}</td>
+                                            <td>{{ slot.start }}</td>
+                                            <td>{{ slot.end }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div class="text-center">
+            <a href="{{ url_for('college_tt') }}" class="btn btn-primary">Generate Another Timetable</a>
+            <a href="{{ url_for('index') }}" class="btn btn-secondary">Return to Home</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

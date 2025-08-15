@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <h2 class="mb-4">Exam Timetable Generator</h2>
+        
+        <form method="POST" action="{{ url_for('exam_tt') }}">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    Basic Information
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="num_subjects" class="form-label">Number of Subjects</label>
+                        <input type="number" class="form-control" id="num_subjects" name="num_subjects" min="1" value="5" required>
+                    </div>
+                    
+                    <div id="subjects_container">
+                        <!-- Subjects will be added here by JavaScript -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    Date Range
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="year" class="form-label">Year</label>
+                            <input type="number" class="form-control" id="year" name="year" min="{{ current_year }}" value="{{ current_year }}" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="start_date" class="form-label">Start Date</label>
+                            <input type="date" class="form-control" id="start_date" name="start_date" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="end_date" class="form-label">End Date</label>
+                            <input type="date" class="form-control" id="end_date" name="end_date" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary btn-lg">Generate Timetable</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Dynamically add subject fields with components
+    document.getElementById('num_subjects').addEventListener('change', function() {
+        const container = document.getElementById('subjects_container');
+        container.innerHTML = '';
+        
+        for (let i = 0; i < this.value; i++) {
+            const card = document.createElement('div');
+            card.className = 'card mb-3';
+            card.innerHTML = `
+                <div class="card-body">
+                    <h5 class="card-title">Subject ${i+1}</h5>
+                    <div class="mb-3">
+                        <label for="subject_${i}_name" class="form-label">Subject Name</label>
+                        <input type="text" class="form-control" id="subject_${i}_name" name="subject_${i}_name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Exam Components</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="subject_${i}_theory" name="subject_${i}_theory">
+                            <label class="form-check-label" for="subject_${i}_theory">Theory</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="subject_${i}_lab" name="subject_${i}_lab">
+                            <label class="form-check-label" for="subject_${i}_lab">Lab</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="subject_${i}_course_project" name="subject_${i}_course_project">
+                            <label class="form-check-label" for="subject_${i}_course_project">Course Project</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="subject_${i}_viva" name="subject_${i}_viva">
+                            <label class="form-check-label" for="subject_${i}_viva">Viva</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="subject_${i}_seminar_ppt" name="subject_${i}_seminar_ppt">
+                            <label class="form-check-label" for="subject_${i}_seminar_ppt">Seminar PPT</label>
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.appendChild(card);
+        }
+    });
+    
+    // Initialize with default number of subjects
+    document.getElementById('num_subjects').dispatchEvent(new Event('change'));
+    
+    // Set default dates (today + 1 month for start, today + 2 months for end)
+    const today = new Date();
+    const startDate = new Date();
+    startDate.setMonth(today.getMonth() + 1);
+    const endDate = new Date();
+    endDate.setMonth(today.getMonth() + 2);
+    
+    document.getElementById('start_date').valueAsDate = startDate;
+    document.getElementById('end_date').valueAsDate = endDate;
+    document.getElementById('year').value = today.getFullYear();
+</script>
+{% endblock %}

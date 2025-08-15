@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 text-center">
+        <h1 class="mb-4">Conflict-Free Scheduling System</h1>
+        <p class="lead mb-5">Efficiently schedule college lectures and exams without conflicts</p>
+        
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h2 class="card-title">College Timetable</h2>
+                        <p class="card-text">Generate an optimal schedule for regular college lectures</p>
+                        <a href="{{ url_for('college_tt') }}" class="btn btn-primary">Schedule Lectures</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h2 class="card-title">Exam Timetable</h2>
+                        <p class="card-text">Create a conflict-free exam schedule considering holidays</p>
+                        <a href="{{ url_for('exam_tt') }}" class="btn btn-primary">Schedule Exams</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <h2 class="mb-4">College Timetable Generator</h2>
+        
+        <form method="POST" action="{{ url_for('college_tt') }}">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    Basic Information
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="academic_year" class="form-label">Academic Year</label>
+                        <select class="form-select" id="academic_year" name="academic_year" required>
+                            <option value="1">First Year</option>
+                            <option value="2">Second Year</option>
+                            <option value="3">Third Year</option>
+                            <option value="4">Fourth Year</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Start Time</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="use_default" id="use_default_yes" value="yes" checked>
+                            <label class="form-check-label" for="use_default_yes">
+                                Use default time based on academic year
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="use_default" id="use_default_no" value="no">
+                            <label class="form-check-label" for="use_default_no">
+                                Use custom time
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3" id="custom_time_group" style="display: none;">
+                        <label for="custom_time" class="form-label">Custom Start Time (HH:MM)</label>
+                        <input type="time" class="form-control" id="custom_time" name="custom_time">
+                        
+                        <label for="mode" class="form-label mt-2">Mode</label>
+                        <select class="form-select" id="mode" name="mode">
+                            <option value="Offline">Offline</option>
+                            <option value="Online">Online</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    Schedule Details
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="working_days" class="form-label">Number of Working Days (Monday is day 1)</label>
+                        <input type="number" class="form-control" id="working_days" name="working_days" min="1" max="7" value="5" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="num_subjects" class="form-label">Number of Subjects</label>
+                        <input type="number" class="form-control" id="num_subjects" name="num_subjects" min="1" value="5" required>
+                    </div>
+                    
+                    <div id="subjects_container">
+                        <!-- Subjects will be added here by JavaScript -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    Lecture Details
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="theory_lectures" class="form-label">Theory Lectures per Subject (per week)</label>
+                            <input type="number" class="form-control" id="theory_lectures" name="theory_lectures" min="0" value="2" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="lab_lectures" class="form-label">Lab Lectures per Subject (per week)</label>
+                            <input type="number" class="form-control" id="lab_lectures" name="lab_lectures" min="0" value="1" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="tutorial_lectures" class="form-label">Tutorial Lectures per Subject (per week)</label>
+                            <input type="number" class="form-control" id="tutorial_lectures" name="tutorial_lectures" min="0" value="1" required>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="theory_duration" class="form-label">Theory Duration (hours)</label>
+                            <input type="number" class="form-control" id="theory_duration" name="theory_duration" min="0.5" max="3" step="0.5" value="1" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="lab_duration" class="form-label">Lab Duration (hours)</label>
+                            <input type="number" class="form-control" id="lab_duration" name="lab_duration" min="0.5" max="3" step="0.5" value="2" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="tutorial_duration" class="form-label">Tutorial Duration (hours)</label>
+                            <input type="number" class="form-control" id="tutorial_duration" name="tutorial_duration" min="0.5" max="3" step="0.5" value="1" required>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="break_duration" class="form-label">Break Duration (hours)</label>
+                        <input type="number" class="form-control" id="break_duration" name="break_duration" min="0.25" max="2" step="0.25" value="0.5" required>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary btn-lg">Generate Timetable</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Show/hide custom time field based on radio button selection
+    document.querySelectorAll('input[name="use_default"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            document.getElementById('custom_time_group').style.display = 
+                this.value === 'no' ? 'block' : 'none';
+        });
+    });
+    
+    // Dynamically add subject fields based on number of subjects
+    document.getElementById('num_subjects').addEventListener('change', function() {
+        const container = document.getElementById('subjects_container');
+        container.innerHTML = '';
+        
+        for (let i = 0; i < this.value; i++) {
+            const div = document.createElement('div');
+            div.className = 'mb-3';
+            div.innerHTML = `
+                <label for="subject_${i}" class="form-label">Subject ${i+1} Name</label>
+                <input type="text" class="form-control" id="subject_${i}" name="subjects[]" required>
+            `;
+            container.appendChild(div);
+        }
+    });
+    
+    // Initialize with default number of subjects
+    document.getElementById('num_subjects').dispatchEvent(new Event('change'));
+</script>
+{% endblock %}
