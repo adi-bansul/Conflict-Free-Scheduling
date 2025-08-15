@@ -21,26 +21,31 @@ Frontend: HTML, CSS, Jinja2 Templates
 
 Others: Pandas (data handling), Algorithms for conflict resolution
 
+
 Installation & Setup
 1️⃣ Clone the Repository
+
 git clone https://github.com/adi-bansul/Conflict-Free-Scheduling.git
 cd Conflict-Free-Scheduling
 
 2️⃣ Create & Activate Virtual Environment
+
 python -m venv venv
 venv\Scripts\activate      # For Windows
 source venv/bin/activate   # For Mac/Linux
 
 3️⃣ Install Dependencies
+
 pip install -r requirements.txt
 
 4️⃣ Run the Application
-python app.py
 
+python app.py
 
 The app will start running at: http://127.0.0.1:5000/
 
 Project Structure
+
 Conflict-Free-Scheduling/
 │── app.py                  # Main Flask application
 │── College_Tt.py           # College timetable generator
