@@ -23,6 +23,7 @@ Others: Pandas (data handling), Algorithms for conflict resolution
 
 
 Installation & Setup
+
 1️⃣ Clone the Repository
 
 git clone https://github.com/adi-bansul/Conflict-Free-Scheduling.git
