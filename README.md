@@ -48,13 +48,13 @@ The app will start running at: http://127.0.0.1:5000/
 Project Structure
 
 Conflict-Free-Scheduling/
-│── app.py                  # Main Flask application
-│── College_Tt.py           # College timetable generator
-│── Exam_Tt.py              # Exam timetable generator
-│── templates/              # HTML templates
-│── static/css/style.css    # Styling
-│── requirements.txt        # Python dependencies
-└── .gitignore              # Files to be ignored by Git
+│── app.py # Main Flask application
+│── College_Tt.py # College timetable generator
+│── Exam_Tt.py # Exam timetable generator
+│── templates/ # HTML templates
+│── static/css/style.css # Styling
+│── requirements.txt # Python dependencies
+└── .gitignore # Files to be ignored by Git
 
 
 Author
