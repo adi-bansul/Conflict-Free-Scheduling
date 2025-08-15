@@ -56,5 +56,6 @@ Conflict-Free-Scheduling/
 │── requirements.txt        # Python dependencies
 └── .gitignore              # Files to be ignored by Git
 
+
 Author
 Aditya Bansul
